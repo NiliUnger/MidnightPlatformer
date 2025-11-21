@@ -5,15 +5,14 @@ import os
 # notes about game lore: a girl is running away from home (don't learn this until end of the game)
 # and she's running to her aunt's house. if she runs out of time or takes too much damage play an animation of her parents catching her
 
-#general notes: add 
 # powerups (higher jumps) (maybe a little star!)
 
 def game():
     pygame.init()
 
     #display!
-    screen_width = 128
-    screen_height = 256
+    screen_width = 256
+    screen_height = 128
     splash = pygame.Group()
     screen = pygame.display.set_mode((screen_width, screen_height))
     clock = pygame.time.Clock()
@@ -53,10 +52,16 @@ def game():
     #coin_one
     #coin_two
     #coin_collected
-    #platforms
+    #health_bar
+    cloud_platform = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/cloud_platform.pxm")
+    storm_platform =  pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/storm_platform.pxm")
     #star_power (makes you jump higher)
     #hourglass_power (speeds you up)
     #timer (like for the corner. i need to research how to do this)(wait i know have a number file than just like apply it to hundreds tens and ones)
+    #make some sort of box for powerups to be in
+    #something signifying the end of the level
+    #coin-counter (similar to timer), other side of the screen
+
 
 # note to fix flower sprite but im lazy rn (rehearsal 11/19)
     girl_sprite = pygame.image.TileGrid(
@@ -76,29 +81,70 @@ def game():
     #adding those sprites as file thingies
 
     splash.append(level_sprite)
-    splash.append(girl_sprite)
+    splash.append(girl_sprite, x=10, y=20)
+    splash.append(cloud_platform, x=50, y=80)
+    splash.append(storm_platform, x=200, y=65)
+    splash.append(flower_sprite, x= 200, y = 70)
+    #add platforms and flowers and coins to splash once i decide where they go (DESIGN THE LEVEL)
+    #it's agreed by me that there are 3 flowers per level
+
 
     #add some sounds here!
     #make them myself lol i aint hiring a real composer
     # pygame.mixer.Sound() RESEARCH THIS!!!
 
     
-    #variables
+    #variables defined (for beginning)
     coin = 0
     flower = 0
-    time = 600
-    x = girl_sprite.x
-    y = girl_sprite.y
+    time = 300
     star = False
     hourglass = False
-    girl_hitbox = pygame.Rect(x, y, girl_sprite.width, girl_sprite.height)
-    flower_hitbox = pygame.Rext(flower_sprite.x, flower_sprite.y, flower_sprite.width, flower_sprite.height)
+    health = 10
+
+    #hitboxes defined
+
+    girl_hitbox = pygame.Rect(girl_sprite.x, girl_sprite.y, girl_sprite.width, girl_sprite.height)
+    flower_hitbox = pygame.Rect(flower_sprite.x, flower_sprite.y, flower_sprite.width, flower_sprite.height)
+    cloud_hitbox = pygame.Rect(cloud_platform.x, cloud_platform.y, cloud_platform.width, cloud_platform.height)
+    storm_hitbox = pygame.Rect(storm_platform.x, storm_platform.y, storm_platform.width, storm_platform.height)
     #coin_hitbox
     #star_hitbox
     #hourglass_hitbox
 
+    #functions for hitboxes
+    def collide():
+        if girl_hitbox.collideobjects(cloud_hitbox):
+            girl_sprite.y == cloud_platform.y
+        if girl_hitbox.collideobjects(storm_hitbox):
+            girl_sprite.y == storm_platform.y
+            for second in clock:
+                health -= .5
+    #collecting flower function, changing sprite and appending to screen
+    def flower_collect():
+        if girl_sprite.collideobjects(flower_hitbox) == True:
+                flower += 1
+                health += 2
+                flower_sprite = pygame.image.TileGrid(
+                    flower_collected,
+                    pixel_shader= flower_collected.pixel_shader
+                )
+                pygame.event.wait()(.5)
+                splash.remove(flower_sprite)
+                flower_sprite = pygame.image.TileGrid(
+                    flower_one,
+                    pixel_shader = flower_one.pixel_shader
+                )
+                if flower == 1:
+                    splash.append(flower_sprite, x=220, y=120)
+                if flower == 2:
+                    splash.append(flower_sprite, x = 230, y=120) and splash.append(flower_sprite, x=220, y=120)
+                if flower == 3 :
+                    splash.append(flower_sprite, x = 240, y=120) and splash.append(flower_sprite, x = 230, y=120) and splash.append(flower_sprite, x=220, y=120)
     #(intro is defined within the intro function)
     intro()
+    collide()
+    flower_collect()
     # timer for level
     if intro == False:
         for second in clock:
@@ -106,34 +152,36 @@ def game():
             if time <= 0:
                 #maybe add a losing animation if time? (ofc there's time lol)
                 pygame.quit()
-
+        if health <= 0:
+            #add losing animation with girl falling to the ground
+            #blare out screen with sirens
+            pygame.quit()
     keys = pygame.key.get_pressed()
-    if pygame.event(keys[pygame.K_LEFT]) & hourglass == False & intro == False:
+    if pygame.event(keys[pygame.K_LEFT]) and hourglass == False and intro == False:
         walk_left()
-        x -= 1
-        
-    if pygame.event(keys[pygame.K_RIGHT]) & hourglass == False & intro == False:
+        x -= 1     
+    if pygame.event(keys[pygame.K_RIGHT]) and hourglass == False and intro == False:
        walk_right()
        x += 1
-    if pygame.event(keys[pygame.K_LEFT]) & hourglass == True & intro == False:
+    if pygame.event(keys[pygame.K_LEFT]) and hourglass == True and intro == False:
         walk_left()
         x -= 3
         walk_left()
-    if pygame.event(keys[pygame.K_RIGHT]) & hourglass == True & intro == False:
+    if pygame.event(keys[pygame.K_RIGHT]) and hourglass == True and intro == False:
         walk_right()
         x += 3
         walk_right()
-    if pygame.event(keys[pygame.K_UP]) & star == False & intro == False:
+    if pygame.event(keys[pygame.K_UP]) and star == False and intro == False:
         y += 5
         pygame.event.wait(.5)
         y -= 5
         #add thing about platforms
-    if pygame.event(keys[pygame.K_UP]) & star == True & intro == False:
+    if pygame.event(keys[pygame.K_UP]) and star == True and intro == False:
         y += 10
         pygame.event.wait(.5)
         y -= 10
         # add thing about platforms
-    if pygame.event(keys[pygame.K_DOWN]) & intro == False:
+    if pygame.event(keys[pygame.K_DOWN]) and intro == False:
         girl_sprite = pygame.image.TileGrid(
             crouch_one,
             pixel_shader = crouch_one.pixel_shader
@@ -293,3 +341,4 @@ def game():
         pygame.event.wait()(3)
         pygame.sprite.remove(intro_sprite)
         intro = False
+    game()
