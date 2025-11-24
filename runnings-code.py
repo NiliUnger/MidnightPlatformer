@@ -2,6 +2,12 @@ import pygame
 import time
 import random
 import os
+
+#WHAT TO CODE AFTER SHABBAT!
+# PUT IN COIN SPRITE, ADDING COINS, DOING A COUNT, ADDING THE ANIMATION, ETC
+#FIX THE FLOWER SPRITE. ADD A TIMER, ETC
+#MAKE BLOCKS TO GET POWERUPS OUT OF AND ADD THE FILES FOR IT (ONCE I DRAW THEM)
+
 # notes about game lore: a girl is running away from home (don't learn this until end of the game)
 # and she's running to her aunt's house. if she runs out of time or takes too much damage play an animation of her parents catching her
 
@@ -47,21 +53,28 @@ def game():
     level_one = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/background.png")
     crouch_one = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/crouch_one.pxm")
     crouch_two = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/crouch_two.pxm")
-    #jump_one
-    #jump_two
-    #coin_one
-    #coin_two
-    #coin_collected
+    jump_one = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/jump_one.pxm")
+    jump_two = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/jump_two.pxm")
+    jump_three = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/jump_three.pxm")
+    coin_one = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/coin_one.pxm")
+    coin_two = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/coin_two.pxm")
     #health_bar
     cloud_platform = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/cloud_platform.pxm")
     storm_platform =  pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/storm_platform.pxm")
-    #star_power (makes you jump higher)
-    #hourglass_power (speeds you up)
-    #timer (like for the corner. i need to research how to do this)(wait i know have a number file than just like apply it to hundreds tens and ones)
+    star_power = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/star_power.pxm")
+    hourglass_power = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/hourglass_collected.pxm")
+    zero = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/zero.pxm")
+    one = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/one.pxm")
+    two = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/two.pxm")
+    three = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/three.pxm")
+    four = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/four.pxm")
+    five = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/five.pxm")
+    six = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/six.pxm")
+    seven = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/seven.pxm")
+    eight = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/eight.pxm")
+    nine = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/nine.pxm")
     #make some sort of box for powerups to be in
     #something signifying the end of the level
-    #coin-counter (similar to timer), other side of the screen
-
 
 # note to fix flower sprite but im lazy rn (rehearsal 11/19)
     girl_sprite = pygame.image.TileGrid(
@@ -76,8 +89,88 @@ def game():
         flower_one,
         pixel_shader = flower_one.pixel_shader
     )
-    #add coin sprite, star sprite
+    coin_sprite = pygame.image.TileGrid(
+        coin_one,
+        pixel_shader = coin_one.pixel_shader
+    )
+    jump_sprite = pygame.image.TileGrid(
+        jump_one,
+        pixel_shader = jump_one.pixel_shader
+    )
+    ones_sprite = pygame.image.TileGrid(
+        zero,
+        pixel_shader = zero.pixel_shader
+    )
+    tens_sprite = pygame.image.TileGrid(
+        zero,
+        pixel_shader = zero.pixel_shader
+    )
+    hundreds_sprite = pygame.image.TileGrid(
+        zero,
+        pixel_shader = zero.pixel_shader
+    )
+    def countdown():
+        for second in time:
+            if second == 600:
+                hundreds_sprite = pygame.image.TileGrid(
+                    six,
+                    pixel_shader = six.pixel_shader
+                )
+            elif second >= 500:
+                hundreds_sprite = pygame.image.TileGrid(
+                    five,
+                    pixel_shader = five.pixel_shader
+                )
+            elif second >= 400:
+                hundreds_sprite = pygame.image.TileGrid(
+                    four,
+                    pixel_shader = four.pixel_shader
+                )
+            elif second >= 300:
+                 hundreds_sprite = pygame.image.TileGrid(
+                    three,
+                    pixel_shader = three.pixel_shader
+                )
+            elif second >= 200:
+                hundreds_sprite = pygame.image.TileGrid(
+                    two,
+                    pixel_shader = two.pixel_shader
+                )
+            elif second >= 100:
+                hundreds_sprite = pygame.image.TileGrid(
+                    one,
+                    pixel_shader = one.pixel_shader
+                )
+        #add tens here
+        #add ones here
+    def jumping():
+        jump_sprite = pygame.image.TileGrid(
+            jump_two,
+            pixel_shader = jump_two.pixel_shader
+        )
+        pygame.event.wait()(.5)
+        jump_sprite = pygame.image.TileGrid(
+            jump_three,
+            pixel_shader = jump_three.pixel_shader
+        )
+        pygame.event.wait()(.5)
+        jump_sprite = pygame.image.TileGrid(
+            jump_one,
+            pixel_shader = jump_one.pixel_shader
+        )
 
+
+    def coin_change():
+        for second in clock:
+            coin_sprite = pygame.image.TileGrid(
+                coin_two,
+                pixel_shader = coin_two.pixel_shader
+            )
+            pygame.event.wait()(.5)
+            coin_sprite = pygame.image.TileGrid(
+                coin_one,
+                pixel_shader = coin_one.pixel_shader
+            )
     #adding those sprites as file thingies
 
     splash.append(level_sprite)
@@ -108,11 +201,20 @@ def game():
     flower_hitbox = pygame.Rect(flower_sprite.x, flower_sprite.y, flower_sprite.width, flower_sprite.height)
     cloud_hitbox = pygame.Rect(cloud_platform.x, cloud_platform.y, cloud_platform.width, cloud_platform.height)
     storm_hitbox = pygame.Rect(storm_platform.x, storm_platform.y, storm_platform.width, storm_platform.height)
-    #coin_hitbox
-    #star_hitbox
-    #hourglass_hitbox
+    coin_hitbox =  pygame.Rect(coin_sprite.x, coin_sprite.y, coin_sprite.width, coin_sprite.height)
+    star_hitbox = pygame.Rect(star_power.x, star_power.y, star_power.width, star_power.height)
+    hourglass_hitbox = pygame.Rect(hourglass_power.x, hourglass_power.y, hourglass_power.width, hourglass_power.height)
 
     #functions for hitboxes
+    def powerup_collect():
+        if girl_hitbox.collideobjects(hourglass_hitbox) == True:
+            hourglass = True
+            pygame.event.wait()(10)
+            hourglass = False
+        if girl_hitbox.collideobjects(star_hitbox) == True:
+            star = True
+            pygame.event.wait()(10)
+            star  = False
     def collide():
         if girl_hitbox.collideobjects(cloud_hitbox):
             girl_sprite.y == cloud_platform.y
@@ -141,10 +243,18 @@ def game():
                     splash.append(flower_sprite, x = 230, y=120) and splash.append(flower_sprite, x=220, y=120)
                 if flower == 3 :
                     splash.append(flower_sprite, x = 240, y=120) and splash.append(flower_sprite, x = 230, y=120) and splash.append(flower_sprite, x=220, y=120)
+    def coin_collect():
+        if girl_sprite.collideobjects(coin_hitbox) == True:
+                coin += 1
+                #add coin collecting sound and sprite here
+                pygame.event.wait()(.5)
+                splash.remove(coin_sprite)
+                #update coin counter on screen
     #(intro is defined within the intro function)
     intro()
     collide()
     flower_collect()
+    coin_change()
     # timer for level
     if intro == False:
         for second in clock:
@@ -172,15 +282,15 @@ def game():
         x += 3
         walk_right()
     if pygame.event(keys[pygame.K_UP]) and star == False and intro == False:
+        jumping()
         y += 5
-        pygame.event.wait(.5)
+        pygame.event.wait(1)
         y -= 5
-        #add thing about platforms
     if pygame.event(keys[pygame.K_UP]) and star == True and intro == False:
+        jumping()        
         y += 10
-        pygame.event.wait(.5)
+        pygame.event.wait(1)
         y -= 10
-        # add thing about platforms
     if pygame.event(keys[pygame.K_DOWN]) and intro == False:
         girl_sprite = pygame.image.TileGrid(
             crouch_one,
@@ -226,14 +336,6 @@ def game():
         girl_sprite = pygame.image.TileGrid(
             side_right,
             pixel_shader = side_right.pixel_shader
-        )
-    def jump():
-        #add jump sprites once I make them
-        pygame.event.wait()(.2)
-        pygame.event.wait()(.2)
-        girl_sprite = pygame.image.TileGrid(
-            front_face,
-            pixel_shader = front_face.pixel_shader
         )
     def intro():
         intro = True
