@@ -44,6 +44,7 @@ flower_two = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProject
 flower_three = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sprites/midnight_flower_three.png")
 flower_collected = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sprites/midnight_flower_collected.png")
 level_one = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sprites/background.png")
+level_two = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sprites/level_two.png")
 crouch_one = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sprites/crouch_one.png")
 crouch_two = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sprites/crouch_two.png")
 jump_one = pygame.image.load("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sprites/jump_one.png")
@@ -90,42 +91,32 @@ sirens_sound = pygame.mixer.Sound("C:/Users/nilib/OneDrive/HackClub/MilkyWayProj
 whispers_sound = pygame.mixer.Sound("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sounds/182378__elizaeilis__whispers.mp3")
 night_ambience_sound = pygame.mixer.Sound("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sounds/195969__rgbrobot__night-ambience-01-aug-2-2013-back-yard.wav")
 flower_collect_sound = pygame.mixer.Sound("C:/Users/nilib/OneDrive/HackClub/MilkyWayProjects/MidnightPlatformer/runnings-sounds/413629__djlprojects__video-game-sfx-positive-action-long-tail.wav")
+#note to add more sounds once i have the time!!! (maybe do during english class bc what else should i do lol)
     
     #setting class sprites for certain images to be changed
 
-class Player():
-    def __init__(self, x, y, width, height):
-        front_face,
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-
-class Level():
-    def __init__(self, width, height):
-        level_one,
-        self.width=width
-        self.height=height
-
-class flower():
-    def __init__ (self, width, height):
-        flower_one,
-        self.width=width
-        self.height=height
+girl_sprite = front_face
+walk_left_frames = [side_left, walk_left_one, walk_left_two]
+walk_right_frames = [side_right, walk_right_one, walk_right_two]
+jump_frames = [jump_one, jump_two, jump_three]
+crouch_frames = [crouch_one, crouch_two]
+flower_frames = [flower_one, flower_two, flower_three, flower_collected]
+coin_frames = [coin_one, coin_two, coin_collected]
+intro_frames = [frame1, frame2, frame3, frame4, frame5, frame6, frame7, frame8, frame9, frame10, frame11, frame12, frame13, frame14, frame15, frame16]
+level_frames = [level_one, level_two]
+number_frames = [zero, one, two, three, four, five, six, seven, eight, nine]
+health_frames = [health_ten, health_nine, health_eight, health_seven, health_six, health_five, health_four, health_three, health_two, health_one, health_zero]
 
 
-level_sprite = level_one
-flower_sprite = flower_one
-coin_sprite = coin_one
-jump_sprite = jump_one
-ones_sprite = zero
-tens_sprite = zero
-hundreds_sprite = zero
-health_sprite = health_ten
+level_sprite = level_frames[0]
+flower_sprite = flower_frames[0]
+coin_sprite = coin_frames[0]
+jump_sprite = jump_frames
+health_sprite = health_frames[0]
 
     #display!
 
-screen_width = 256
+screen_width = 512
 screen_height = 128
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
@@ -134,7 +125,7 @@ clock = pygame.time.Clock()
 
 coin = 0
 flower = 0
-time = 300
+time_remaining = 300
 star = False
 hourglass = False
 health = 10
@@ -142,37 +133,40 @@ tens = 0
 ones = 0
 level = 1
 run = True
+intro_active = True
 
 def game():
-
     
     #hitboxes defined
 
-    girl_hitbox = pygame.Rect(Player.x, Player.y, Player.width, Player.height)
-    flower_hitbox = pygame.Rect(flower_sprite.x, flower_sprite.y, flower_sprite.width, flower_sprite.height)
-    cloud_hitbox = pygame.Rect(cloud_platform.x, cloud_platform.y, cloud_platform.width, cloud_platform.height)
-    storm_hitbox = pygame.Rect(storm_platform.x, storm_platform.y, storm_platform.width, storm_platform.height)
-    coin_hitbox =  pygame.Rect(coin_sprite.x, coin_sprite.y, coin_sprite.width, coin_sprite.height)
-    box_one_hitbox = pygame.Rect(box_one.x, box_one.y, box_one.width, box_one.height)
-    box_two_hitbox = pygame.Rect(box_two.x, box_two.y, box_two.width, box_two.height)
-    bus_stop_hitbox = pygame.Rect(bus_stop.x, bus_stop.y, bus_stop.width, bus_stop.height)
-
+    girl_hitbox =girl_sprite.get_rect()
+    flower_hitbox = flower_sprite.get_rect()
+    cloud_hitbox =cloud_platform.get_rect()
+    storm_hitbox = storm_platform.get_rect()
+    coin_hitbox =  coin_sprite.get_rect()
+    box_one_hitbox =box_one.get_rect()
+    box_two_hitbox = box_two.get_rect()
+    bus_stop_hitbox = bus_stop.get_rect()
     #defining functions that use hitboxes
 
     def powerup_collect():
         if hourglass == True:
             screen.blit(hourglass_power)
+            time.sleep(1)
+            screen.remove(hourglass_power)
             time.sleep(10)
             hourglass = False
         if star == True:
             screen.blit(star_power)
+            time.sleep(1)
+            screen.remove(star_power)
             time.sleep(10)
             star  = False
     def collide():
         if girl_hitbox.colliderect(cloud_hitbox):
-            Player.y = cloud_platform.y
+            girl_sprite.y = cloud_platform.y
         if girl_hitbox.colliderect(storm_hitbox):
-            Player.y = storm_platform.y
+            girl_sprite.y = storm_platform.y
             health -= 1
     def box_hit():
         if girl_hitbox.colliderect(box_one_hitbox) or girl_hitbox.colliderect(box_two_hitbox):
@@ -193,7 +187,7 @@ def game():
             if second % 10:
                 tens += 1
                 if tens == 1:
-                    tens_sprite = zero
+                    screen.blit()
                 elif tens == 2:
                     tens_sprite = nine
                 elif tens == 3:
@@ -222,25 +216,25 @@ def game():
             for second in time:
                 ones += 1
                 if ones == 1:
-                    ones_sprite = one
+                    screen.blit(number_frames[1])
                 elif ones == 2:
-                    ones_sprite = two
+                    screen.blit(number_frames[2])
                 elif ones == 3:
-                    ones_sprite = three
+                    screen.blit(number_frames[3])
                 elif ones == 4:
-                    ones_sprite = four
+                    screen.blit(number_frames[4])
                 elif ones == 5:
-                    ones_sprite = five
+                    screen.blit(number_frames[5])
                 elif ones == 6:
-                    ones_sprite = six
+                    screen.blit(number_frames[6])
                 elif ones == 7:
-                    ones_sprite = seven
+                    screen.blit(number_frames[7])
                 elif ones == 8:
-                    ones_sprite = eight
+                    screen.blit(number_frames[8])
                 elif ones == 9:
-                    ones_sprite = nine
+                    screen.blit(number_frames[9])
                 elif ones == 10:
-                    ones_sprite = zero
+                    screen.blit(number_frames[0])
                 else:
                     ones = 0
                     ones_change()
@@ -250,63 +244,42 @@ def game():
     def countdown():
             for second in time:
                 if second >= 300:
-                    hundreds_sprite = three
+                    screen.blit(number_frames[3])
                     tens_change()
                     ones_change()
                 elif second >= 200:
-                    hundreds_sprite = two
+                    screen.blit(number_frames[2])
                     tens_change()
                     ones_change()
                 elif second >= 100:
-                    hundreds_sprite = one
+                    screen.blit(number_frames[1])
                     tens_change()
                     ones_change()
 
                 else:
-                    hundreds_sprite = zero
+                    screen.blit(number_frames[0])
                     tens_change()
                     ones_change()
     
     #function for animating when the main character jumps
 
     def jumping():
-        class Player():
-            def __init__(self, x, y, width, height):
-                jump_one,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
+        # JUMP 1
+        time.sleep(0.5)
+        #JUMP 2
 
         time.sleep(0.5)
-        class Player():
-            def __init__(self, x, y, width, height):
-                jump_two,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
-
-        time.sleep(0.5)
-        class Player():
-            def __init__(self, x, y, width, height):
-                jump_three,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
-
+       #JUMP 3
 
     #makes the flower sprite change on screen
 
     def flower_change():
-        flower_sprite = flower_two
+        screen.blit(flower_one (0,0)) #fix coords please !!!
         time.sleep(0.5)
         flower_sprite = flower_three
         time.sleep(0.5)
         flower_sprite = flower_one
         time.sleep(0.5)
-        flower_change()
 
     #makes the coin sprite change on screen
 
@@ -315,7 +288,6 @@ def game():
         time.sleep(0.5)
         coin_sprite = coin_one
         time.sleep(0.5)
-        coin_change()
     
 
     
@@ -401,7 +373,7 @@ def game():
 
     # timer for level
 
-    if intro == False:
+    if intro_active == False:
         time_remaining = 300
         time_start = time.time()
         while time_remaining > 0:
@@ -419,168 +391,94 @@ def game():
     #doing key detection and action for key presses
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] and hourglass == False and intro == False:
+    if keys[pygame.K_LEFT] and hourglass == False and intro_active == False:
         walk_left()
         x -= 1     
-    if keys[pygame.K_RIGHT] and hourglass == False and intro == False:
+    if keys[pygame.K_RIGHT] and hourglass == False and intro_active == False:
        walk_right()
        x += 1
-    if keys[pygame.K_LEFT] and hourglass == True and intro == False:
+    if keys[pygame.K_LEFT] and hourglass == True and intro_active == False:
         walk_left()
         x -= 3
         walk_left()
-    if keys[pygame.K_RIGHT] and hourglass == True and intro == False:
+    if keys[pygame.K_RIGHT] and hourglass == True and intro_active == False:
         walk_right()
         x += 3
         walk_right()
-    if keys[pygame.K_UP] and star == False and intro == False:
+    if keys[pygame.K_UP] and star == False and intro_active == False:
         jumping()
         y += 5
         time.sleep(1)
         y -= 5
-    if keys[pygame.K_UP] and star == True and intro == False:
+    if keys[pygame.K_UP] and star == True and intro_active == False:
         jumping()        
         y += 10
         time.sleep(1)
         y -= 10
-    if keys[pygame.K_DOWN] and intro == False:
-        class Player():
-            def __init__(self, x, y, width, height):
-                crouch_one,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
+    if keys[pygame.K_DOWN] and intro_active == False:
+       
 
         time.sleep(0.3)
-        class Player():
-            def __init__(self, x, y, width, height):
-                crouch_two,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
+        
 
         time.sleep(0.3)
-        class Player():
-            def __init__(self, x, y, width, height):
-                front_face,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
-
+        
 
     #walking animation functions
 
     def walk_left():
-        class Player():
-            def __init__(self, x, y, width, height):
-                walk_left_one,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
+        
+        time.sleep(0.2)
+        
 
         time.sleep(0.2)
-        class Player():
-            def __init__(self, x, y, width, height):
-                walk_left_two,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
-
-        time.sleep(0.2)
-        class Player():
-            def __init__(self, x, y, width, height):
-                side_left,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
-
+      
     def walk_right():
-        class Player():
-            def __init__(self, x, y, width, height):
-                walk_right_one,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
-
+       
         time.sleep(0.2)
-        class Player():
-            def __init__(self, x, y, width, height):
-                walk_right_two,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
 
+           
         time.sleep(0.2)
-        class Player():
-            def __init__(self, x, y, width, height):
-                side_right,
-                self.x = x
-                self.y = y
-                self.width = width
-                self.height = height
+       
 
     #intro animation function
 
+
     def intro():
-        intro = True
-        intro_sprite = frame1
-        screen.blit(intro_sprite)
+        intro_active = True
+        screen.blit(intro_frames[0], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame2
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[1], (0, 0))
         time.sleep(0.5)
-        intro_sprite =frame3
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[2], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame4
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[3], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame5
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[4], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame6
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[5], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame7
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[6], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame8
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[7], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame9
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[8], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame10
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[9], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame11
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[10], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame12
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[11], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame13
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[12], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame14
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[13], (0, 0))
         time.sleep(0.5)
-        intro_sprite =frame15
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[14], (0, 0))
         time.sleep(0.5)
-        intro_sprite = frame16
-        screen.blit(intro_sprite)
+        screen.blit(intro_frames[15], (0, 0))
         time.sleep(3)
-        screen.remove(intro_sprite)
-        intro = False  
+        intro_active = False  
 
     #function that updates the level sprite
 
@@ -588,60 +486,76 @@ def game():
         if level == 1:
             level_sprite = level_one
             screen.blit(level_sprite)
+        elif level == 2:
+            level_sprite = level_two
+            screen.blit(level_sprite)
         #add as i add more level background to the game
-
-    #calling functions for the game
-    intro()
-    collide()
-    flower_collect()
-    coin_change()
-    flower_change()
-    health_change()
-    countdown()
-    powerup_collect()
-    box_hit()
-    level_update()
-
-    #bliting things that are always on screen
-
-    screen.blit(health_sprite, x= 5, y = 50)
-    screen.blit(hundreds_sprite, x=220, y=50)
-    screen.blit(tens_sprite, x=230, y=50)
-    screen.blit(ones_sprite, x=240, y=50)
-    screen.blit(coin_one, x= 15, y=50)
-    #add numbers for coin counter
 
     #functions that contain all of the info for each level
     
     def level_one():
         night_ambience_sound.play(-1)
-        screen.blit(level_sprite)
-        screen.blit(Player, x=5, y=10) 
-        screen.blit(coin_sprite, x=10,y=10)
-        screen.blit(flower_sprite, x= 30, y = 15)
-        screen.blit(coin_sprite, x= 50, y = 10)
-        screen.blit(cloud_platform, x =75, y = 15)
-        screen.blit(storm_platform, x = 78, y= 20)
-        screen.blit(box_one, x= 78, y= 23)
-        screen.blit(flower_sprite, x = 78, y =30)
-        screen.blit(coin_sprite, x= 95, y = 10)
-        screen.blit(coin_sprite, x= 100, y = 15)
-        screen.blit(coin_sprite, x= 105, y = 10)
-        screen.blit(box_two, x = 120, y = 15)
-        screen.blit(cloud_platform, x = 130, y = 20)
-        screen.blit(box_one, x=130, y = 23)
-        screen.blit(coin_sprite, x=130, y = 25)
-        screen.blit(coin_sprite, x=170, y=12)
-        screen.blit(coin_sprite, x=170, y=18)
-        screen.blit(box_two, x=190, y=15)
-        screen.blit(storm_platform, x=200,y=20)
-        screen.blit(cloud_platform, x=190, y=30)
-        screen.blit(flower_sprite, x=190, y=35)
-        screen.blit(coin_sprite, x=220, y=10)
-        screen.blit(coin_sprite, x=225, y=12)
-        screen.blit(bus_stop, x= 240, y=10)
-while run == True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-    game()  
+        screen.blit(level_sprite, (0, 0))
+        screen.blit(girl_sprite, (5, 10))
+        screen.blit(coin_sprite, (10, 10))
+        screen.blit(flower_sprite, (30, 15))
+        screen.blit(coin_sprite, (50, 10))
+        screen.blit(cloud_platform, (75, 15))
+        screen.blit(storm_platform, (78, 20))
+        screen.blit(box_one, (78, 23))
+        screen.blit(flower_sprite, (78, 30))
+        screen.blit(coin_sprite, (95, 10))
+        screen.blit(coin_sprite, (100, 15))
+        screen.blit(coin_sprite, (105, 10))
+        screen.blit(box_two, (120, 15))
+        screen.blit(cloud_platform, (130, 20))
+        screen.blit(box_one, (130, 23))
+        screen.blit(coin_sprite, (130, 25))
+        screen.blit(coin_sprite, (170, 12))
+        screen.blit(coin_sprite, (170, 18))
+        screen.blit(box_two, (190, 15))
+        screen.blit(storm_platform, (200, 20))
+        screen.blit(cloud_platform, (190, 30))
+        screen.blit(flower_sprite, (190, 35))
+        screen.blit(coin_sprite, (220, 10))
+        screen.blit(coin_sprite, (225, 12))
+        screen.blit(bus_stop, (240, 10))
+
+    #calling functions for the game
+    intro()
+
+    while run == True:
+        clock.tick(60)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+        
+        # Clear screen
+        screen.fill((0, 0, 0))
+        
+        # Update game logic each frame
+        collide()
+        flower_collect()
+        coin_change()
+        flower_change()
+        health_change()
+        countdown()
+        powerup_collect()
+        box_hit()
+        
+        # Render the current level
+        if level == 1:
+            level_one()
+        
+        # Always-on-screen UI
+        screen.blit(health_sprite, (5, 50))
+        screen.blit(number_frames[0], (220, 50))
+        screen.blit(number_frames[0], (230, 50))
+        screen.blit(number_frames[3], (240, 50))
+        screen.blit(coin_one, (15, 50))
+        
+        # Update display
+        pygame.display.flip()
+
+game()
+pygame.quit()
